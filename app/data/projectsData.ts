@@ -13,7 +13,7 @@ export const projectsData: Project[] = [
     slug: "project-alpha",
     name: "Project Alpha",
     description: "Nền tảng AI tối ưu hóa chuỗi cung ứng...",
-    logo: "https://placehold.co/100x100/1e3a8a/ffffff/png?text=A",
+    logo: "https://placehold.co/100x100/1d4ed8/ffffff/png?text=FX",
     tags: ["AI", "Logistics", "B2B SaaS"],
     funding: { stage: "Series A", amount: "$5M" },
     achievement: "Giảm 30% chi phí vận hành cho các đối tác lớn.",

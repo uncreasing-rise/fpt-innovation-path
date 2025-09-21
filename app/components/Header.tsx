@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Rocket, X, Menu } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { colors } from "@/app/theme";
 
 interface NavLink {
   href: string;
@@ -22,9 +23,9 @@ const Header: React.FC = () => {
   }, []);
 
   const navLinks: NavLink[] = [
-    { href: "#home", label: "Trang Chủ" },
+    { href: "#", label: "Trang Chủ" },
     { href: "#about", label: "Giới Thiệu" },
-    { href: "#ai-tools", label: "Công Cụ AI" },
+    { href: "#blogs", label: "Tin tức" },
     { href: "#events", label: "Sự Kiện" },
     { href: "#contact", label: "Liên Hệ" },
   ];
@@ -35,26 +36,26 @@ const Header: React.FC = () => {
     exit: { opacity: 0, height: 0, transition: { duration: 0.3, ease: "easeInOut" } },
   };
 
-  // --- Scroll helper ---
+  // --- Navigate to page ---
   const handleNavClick = (href: string) => {
     setIsMenuOpen(false);
-    const id = href.replace("#", "");
-    if (window.location.pathname !== "/") {
-      // Nếu đang ở trang khác, navigate về "/" trước
-      router.push(`/${href}`);
-    } else {
-      // Scroll tới section trong cùng trang
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }
+    const path = href.replace("#", ""); // "#about" => "about"
+    router.push(`/${path}`);
   };
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white/90 shadow-lg backdrop-blur-lg" : "bg-transparent"}`}>
+    <header
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        isScrolled ? colors.bg.headerScrolled : colors.bg.headerTransparent
+      }`}
+    >
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+        {/* Logo */}
         <a
           onClick={() => handleNavClick("#home")}
-          className={`cursor-pointer text-2xl font-bold flex items-center gap-2 transition-colors ${isScrolled ? "text-slate-900" : "text-white"}`}
+          className={`cursor-pointer text-2xl font-bold flex items-center gap-2 transition-colors ${
+            isScrolled ? colors.text.primary : colors.text.light
+          }`}
         >
           <Rocket className="text-blue-500" /> FPT
           <span className="font-light">Innovation Path</span>
@@ -66,35 +67,52 @@ const Header: React.FC = () => {
             <button
               key={link.href}
               onClick={() => handleNavClick(link.href)}
-              className={`font-medium transition-colors ${isScrolled ? "text-slate-600 hover:text-blue-600" : "text-slate-200 hover:text-white"}`}
+              className={`font-medium transition-colors ${
+                isScrolled ? colors.text.hoverPrimary : colors.text.hoverLight
+              }`}
             >
               {link.label}
             </button>
           ))}
           <button
             onClick={() => handleNavClick("#contact")}
-            className="bg-blue-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-transform hover:scale-105"
+            className={`${colors.bg.primary} ${colors.bg.primaryHover} text-white px-5 py-2.5 rounded-lg font-semibold transition-transform hover:scale-105 ${colors.shadow.button}`}
           >
             Tham Gia Ngay
           </button>
         </nav>
 
-        {/* Mobile menu toggle */}
-        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-50" aria-label="Toggle navigation menu">
-          {isMenuOpen ? <X className="h-6 w-6 text-slate-900 transition-colors" /> : <Menu className={`h-6 w-6 transition-colors ${isScrolled ? "text-slate-900" : "text-white"}`} />}
+        {/* Mobile toggle */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="md:hidden z-50"
+          aria-label="Toggle navigation menu"
+        >
+          {isMenuOpen ? (
+            <X className="h-6 w-6 text-slate-900 transition-colors" />
+          ) : (
+            <Menu className={`h-6 w-6 transition-colors ${isScrolled ? colors.text.primary : colors.text.light}`} />
+          )}
         </button>
       </div>
 
       {/* Mobile menu */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div key="mobile-menu" variants={menuVariants} initial="hidden" animate="visible" exit="exit" className="md:hidden bg-white shadow-lg overflow-hidden">
+          <motion.div
+            key="mobile-menu"
+            variants={menuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className={`${colors.bg.mobileMenu} overflow-hidden md:hidden`}
+          >
             <nav className="flex flex-col">
               {navLinks.map((link) => (
                 <button
                   key={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className="py-3 px-6 text-slate-700 hover:bg-blue-50 hover:text-blue-600 font-medium border-b border-slate-100 text-left"
+                  className={`py-3 px-6 ${colors.text.mobile} ${colors.bg.mobileHover} font-medium border-b border-slate-100 text-left`}
                 >
                   {link.label}
                 </button>
@@ -102,7 +120,7 @@ const Header: React.FC = () => {
               <div className="p-4">
                 <button
                   onClick={() => handleNavClick("#contact")}
-                  className="block w-full text-center bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+                  className={`${colors.bg.primary} ${colors.bg.primaryHover} text-white block w-full text-center px-5 py-3 rounded-lg font-semibold transition-transform hover:scale-105 ${colors.shadow.button}`}
                 >
                   Tham Gia Ngay
                 </button>

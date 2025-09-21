@@ -176,7 +176,7 @@ const Hero = () => {
                         Bệ phóng cho những <span className="text-cyan-300 font-medium">ý tưởng khởi nghiệp</span> đột phá.
                     </motion.p>
                     <motion.div variants={itemVariants}>
-                        <a href="#about" className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold py-4 px-10 rounded-lg text-lg transform transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-cyan-500/50 inline-block shadow-lg shadow-blue-600/40">
+                        <a href="about" className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold py-4 px-10 rounded-lg text-lg transform transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-cyan-500/50 inline-block shadow-lg shadow-blue-600/40">
                             Khám Phá Hành Trình
                         </a>
                     </motion.div>

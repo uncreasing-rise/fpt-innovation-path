@@ -20,7 +20,9 @@ import Head from "next/head";
 import Image from "next/image";
 import type { Event } from "@/app/types";
 
-// --- Image component using next/image with fallback ---
+// -----------------------
+// Image with fallback
+// -----------------------
 const ImageWithFallback: React.FC<{
   src: string;
   alt: string;
@@ -42,11 +44,13 @@ const ImageWithFallback: React.FC<{
   );
 };
 
-// --- Speaker card ---
-const SpeakerCard: React.FC<{ speaker: { name: string; title: string; img: string }; index: number }> = ({
-  speaker,
-  index,
-}) => (
+// -----------------------
+// Speaker Card
+// -----------------------
+const SpeakerCard: React.FC<{
+  speaker: { name: string; title: string; img: string };
+  index: number;
+}> = ({ speaker, index }) => (
   <motion.div
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
@@ -57,7 +61,7 @@ const SpeakerCard: React.FC<{ speaker: { name: string; title: string; img: strin
       <ImageWithFallback
         src={speaker.img}
         alt={speaker.name}
-        className="rounded-full border-2 border-transparent group-hover:border-blue-300"
+        className="rounded-full border-2 border-transparent group-hover:border-blue-800"
         fallbackSrc="/placeholder-avatar.jpg"
       />
     </div>
@@ -66,6 +70,9 @@ const SpeakerCard: React.FC<{ speaker: { name: string; title: string; img: strin
   </motion.div>
 );
 
+// -----------------------
+// Event Detail Component
+// -----------------------
 const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
   const router = useRouter();
   const [isLiked, setIsLiked] = useState(false);
@@ -79,16 +86,18 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
         <p className="text-gray-600 mb-4">The requested event could not be found.</p>
         <button
           onClick={() => router.back()}
-          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          className="inline-flex items-center px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 transition"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Go Back
+          Quay lại
         </button>
       </div>
     );
   }
 
-  // Structured data for SEO
+  // -----------------------
+  // SEO structured data
+  // -----------------------
   const eventStructuredData = {
     "@context": "https://schema.org",
     "@type": "Event",
@@ -113,7 +122,11 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: event.title, text: event.longDescription, url: window.location.href });
+        await navigator.share({
+          title: event.title,
+          text: event.longDescription,
+          url: window.location.href,
+        });
       } catch {
         setShareMenuOpen(!shareMenuOpen);
       }
@@ -136,7 +149,10 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
         <meta property="og:description" content={event.longDescription} />
         <meta property="og:image" content={event.img} />
         <meta property="og:type" content="website" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventStructuredData) }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(eventStructuredData) }}
+        />
       </Head>
 
       <div className="w-full min-h-screen bg-slate-50 flex flex-col py-8 px-4 md:px-8 lg:px-16">
@@ -150,7 +166,7 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
           <div className="flex items-center justify-between">
             <button
               onClick={() => router.back()}
-              className="flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200 rounded-lg px-2 py-1"
+              className="flex items-center text-blue-800 hover:text-blue-900 transition-colors duration-200 rounded-lg px-2 py-1"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Quay lại
@@ -200,24 +216,24 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
               <h1 id="event-title" className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
                 {event.title}
               </h1>
-              <p className="text-gray-600 text-lg leading-relaxed">{event.longDescription}</p>
+              <p className="text-gray-700 text-lg leading-relaxed">{event.longDescription}</p>
 
               {/* Info grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Calendar className="w-5 h-5 text-blue-600 flex-shrink-0" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm mt-4">
+                <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                  <Calendar className="w-5 h-5 text-blue-800 flex-shrink-0" />
                   <span className="font-medium">{event.date}</span>
                 </div>
-                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Clock className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                  <Clock className="w-5 h-5 text-blue-800 flex-shrink-0" />
                   <span className="font-medium">{event.time}</span>
                 </div>
-                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                  <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                  <MapPin className="w-5 h-5 text-blue-800 flex-shrink-0" />
                   <span className="font-medium">{event.location}</span>
                 </div>
-                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Building className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                  <Building className="w-5 h-5 text-blue-800 flex-shrink-0" />
                   <span className="font-medium">{event.eventType}</span>
                 </div>
               </div>
@@ -227,7 +243,7 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
                 href={event.registerLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 mt-4"
+                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-800 to-blue-900 text-white rounded-xl shadow-lg hover:shadow-xl hover:from-blue-900 hover:to-blue-950 transition-all duration-300 transform hover:scale-105 mt-4"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -242,7 +258,7 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
           {event.speakers?.length > 0 && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                <Users className="w-6 h-6 text-blue-600" />
+                <Users className="w-6 h-6 text-blue-800" />
                 Diễn giả
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 w-full">
@@ -257,7 +273,7 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
           {event.schedule?.length > 0 && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                <Clock className="w-6 h-6 text-blue-600" />
+                <Clock className="w-6 h-6 text-blue-800" />
                 Lịch trình
               </h2>
               <div className="space-y-4">
@@ -267,9 +283,9 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 * i }}
-                    className="flex items-start gap-4 p-4 bg-gradient-to-r from-blue-50 to-transparent rounded-lg border-l-4 border-blue-600 hover:shadow-md transition-shadow duration-200"
+                    className="flex items-start gap-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-800 hover:shadow-md transition-shadow duration-200"
                   >
-                    <div className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold min-w-fit">
+                    <div className="bg-blue-800 text-white px-3 py-1 rounded-full text-sm font-semibold min-w-fit">
                       {item.time}
                     </div>
                     <div className="text-gray-700 font-medium">{item.activity}</div>
