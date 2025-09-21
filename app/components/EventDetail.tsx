@@ -17,68 +17,32 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Head from "next/head";
+import Image from "next/image";
 import type { Event } from "@/app/types";
 
-// Skeleton loaders
-const SkeletonLoader = () => (
-  <div className="animate-pulse">
-    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-  </div>
-);
-
-const SpeakerSkeleton = () => (
-  <div className="animate-pulse text-center">
-    <div className="w-20 h-20 bg-gray-200 rounded-full mx-auto mb-2"></div>
-    <div className="h-4 bg-gray-200 rounded w-16 mx-auto mb-1"></div>
-    <div className="h-3 bg-gray-200 rounded w-12 mx-auto"></div>
-  </div>
-);
-
-// Image component with fallback
+// --- Image component using next/image with fallback ---
 const ImageWithFallback: React.FC<{
   src: string;
   alt: string;
-  className: string;
+  className?: string;
   fallbackSrc?: string;
-}> = ({ src, alt, className, fallbackSrc = "/placeholder-event.jpg" }) => {
+}> = ({ src, alt, className = "", fallbackSrc = "/placeholder-event.jpg" }) => {
   const [imgSrc, setImgSrc] = useState(src);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-
-  const handleError = () => {
-    setImgSrc(fallbackSrc);
-    setHasError(true);
-    setIsLoading(false);
-  };
-  const handleLoad = () => setIsLoading(false);
-
   return (
-    <div className="relative w-full">
-      {isLoading && (
-        <div className={`${className} bg-gray-200 animate-pulse flex items-center justify-center`}>
-          <div className="text-gray-400">Loading...</div>
-        </div>
-      )}
-      <img
+    <div className={`relative w-full ${className}`}>
+      <Image
         src={imgSrc}
         alt={alt}
-        className={`${className} ${isLoading ? "hidden" : "block"}`}
-        onError={handleError}
-        onLoad={handleLoad}
-        loading="lazy"
+        fill
+        sizes="100vw"
+        className="object-cover rounded-xl scale-105"
+        onError={() => setImgSrc(fallbackSrc)}
       />
-      {hasError && (
-        <div className="absolute top-2 right-2 bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs flex items-center">
-          <AlertCircle className="w-3 h-3 mr-1" />
-          Fallback image
-        </div>
-      )}
     </div>
   );
 };
 
-// Speaker card
+// --- Speaker card ---
 const SpeakerCard: React.FC<{ speaker: { name: string; title: string; img: string }; index: number }> = ({
   speaker,
   index,
@@ -89,12 +53,14 @@ const SpeakerCard: React.FC<{ speaker: { name: string; title: string; img: strin
     transition={{ delay: index * 0.1 }}
     className="text-center group hover:scale-105 transition-all duration-200"
   >
-    <ImageWithFallback
-      src={speaker.img}
-      alt={speaker.name}
-      className="w-20 h-20 rounded-full mx-auto mb-2 object-cover border-2 border-transparent group-hover:border-blue-300"
-      fallbackSrc="/placeholder-avatar.jpg"
-    />
+    <div className="relative w-20 h-20 mx-auto mb-2">
+      <ImageWithFallback
+        src={speaker.img}
+        alt={speaker.name}
+        className="rounded-full border-2 border-transparent group-hover:border-blue-300"
+        fallbackSrc="/placeholder-avatar.jpg"
+      />
+    </div>
     <p className="font-medium text-gray-900">{speaker.name}</p>
     <p className="text-xs text-gray-500">{speaker.title}</p>
   </motion.div>
@@ -148,7 +114,7 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
     if (navigator.share) {
       try {
         await navigator.share({ title: event.title, text: event.longDescription, url: window.location.href });
-      } catch (err) {
+      } catch {
         setShareMenuOpen(!shareMenuOpen);
       }
     } else {
@@ -227,12 +193,8 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
 
           {/* Title & Image */}
           <div className="flex flex-col lg:flex-row gap-8 w-full">
-            <div className="w-full lg:w-1/2">
-              <ImageWithFallback
-                src={event.img}
-                alt={event.title}
-                className="w-full h-80 lg:h-[32rem] rounded-xl object-cover shadow-md"
-              />
+            <div className="w-full lg:w-1/2 relative h-80 lg:h-[32rem]">
+              <ImageWithFallback src={event.img} alt={event.title} />
             </div>
             <div className="flex-1 flex flex-col gap-4">
               <h1 id="event-title" className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
@@ -277,7 +239,7 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
           </div>
 
           {/* Speakers */}
-          {event.speakers && event.speakers.length > 0 && (
+          {event.speakers?.length > 0 && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
                 <Users className="w-6 h-6 text-blue-600" />
@@ -292,7 +254,7 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
           )}
 
           {/* Schedule */}
-          {event.schedule && event.schedule.length > 0 && (
+          {event.schedule?.length > 0 && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
                 <Clock className="w-6 h-6 text-blue-600" />
@@ -318,7 +280,7 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
           )}
 
           {/* Partners */}
-          {event.partners && event.partners.length > 0 && (
+          {event.partners?.length > 0 && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
               <h2 className="text-2xl font-bold mb-6">Đối tác</h2>
               <div className="flex flex-wrap gap-8 items-center justify-center lg:justify-start w-full">
@@ -328,14 +290,9 @@ const EventDetail: React.FC<{ event: Event }> = ({ event }) => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.1 * i }}
-                    className="relative group"
+                    className="relative group w-32 h-16"
                   >
-                    <ImageWithFallback
-                      src={logo}
-                      alt={`Partner ${i + 1}`}
-                      className="h-12 lg:h-16 object-contain grayscale hover:grayscale-0 transition-all duration-300 group-hover:scale-110"
-                      fallbackSrc="/placeholder-logo.png"
-                    />
+                    <ImageWithFallback src={logo} alt={`Partner ${i + 1}`} fallbackSrc="/placeholder-logo.png" />
                   </motion.div>
                 ))}
               </div>

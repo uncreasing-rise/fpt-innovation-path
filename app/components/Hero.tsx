@@ -6,14 +6,14 @@ import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 import { motion, Variants } from 'framer-motion';
 
-// --- NEW 3D COMPONENTS (DATA PLEXUS CONCEPT) ---
+// --- 3D COMPONENTS (DATA PLEXUS CONCEPT) ---
 
-// Starfield can be kept as a subtle background element
+// Starfield background element
 function Starfield() {
-    const ref = useRef<any>(null);
+    const ref = useRef<THREE.Points>(null);
 
     const sphere = useMemo(() => {
-        const positions = new Float32Array(5000 * 3); // Slightly fewer stars
+        const positions = new Float32Array(5000 * 3);
         for (let i = 0; i < positions.length; i++) {
             positions[i] = (Math.random() - 0.5) * 150;
         }
@@ -31,7 +31,7 @@ function Starfield() {
         <Points ref={ref} positions={sphere} stride={3} frustumCulled={false}>
             <PointMaterial
                 transparent
-                color="#4a5568" // Darker, less distracting color
+                color="#4a5568"
                 size={0.05}
                 sizeAttenuation={true}
                 depthWrite={false}
@@ -40,7 +40,7 @@ function Starfield() {
     );
 }
 
-// NEW: Data Plexus component
+// Data Plexus component
 function DataPlexus() {
     const groupRef = useRef<THREE.Group>(null);
 
@@ -48,7 +48,7 @@ function DataPlexus() {
     const { nodes, lines } = useMemo(() => {
         const numNodes = 300;
         const nodePositions = new Float32Array(numNodes * 3);
-        const points = [];
+        const points: THREE.Vector3[] = [];
 
         // Distribute nodes in a box volume
         for (let i = 0; i < numNodes; i++) {
@@ -62,14 +62,15 @@ function DataPlexus() {
         }
 
         const lineGeometry = new THREE.BufferGeometry();
-        const linePositions = [];
+        const linePositions: number[] = [];
+        
         // Connect nodes that are close to each other
         for (let i = 0; i < numNodes; i++) {
             for (let j = i + 1; j < numNodes; j++) {
                 const p1 = points[i];
                 const p2 = points[j];
                 const distance = p1.distanceTo(p2);
-                if (distance < 2.5) { // Connection threshold
+                if (distance < 2.5) {
                     linePositions.push(p1.x, p1.y, p1.z);
                     linePositions.push(p2.x, p2.y, p2.z);
                 }
@@ -82,7 +83,6 @@ function DataPlexus() {
 
     useFrame(({ clock }) => {
         if (groupRef.current) {
-            // A slow, continuous rotation
             groupRef.current.rotation.y = clock.getElapsedTime() * 0.05;
         }
     });
@@ -107,13 +107,12 @@ function DataPlexus() {
     );
 }
 
-
 function EnhancedScene() {
     const groupRef = useRef<THREE.Group>(null);
 
     useFrame(({ mouse }) => {
         if (groupRef.current) {
-            // Mouse interaction makes you feel like you are looking through the data cloud
+            // Mouse interaction for looking through the data cloud
             groupRef.current.rotation.y += (mouse.x * 0.3 - groupRef.current.rotation.y) * 0.05;
             groupRef.current.rotation.x += (-mouse.y * 0.3 - groupRef.current.rotation.x) * 0.05;
         }
@@ -157,7 +156,7 @@ const Hero = () => {
                 </Canvas>
             </div>
 
-            {/* Vignette overlay is kept to enhance text readability */}
+            {/* Vignette overlay for text readability */}
             <div className="absolute inset-0 z-5 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent to-black/70"></div>
 
             <div className="absolute top-0 left-0 w-full h-full z-10 flex items-center justify-center">
@@ -188,4 +187,3 @@ const Hero = () => {
 };
 
 export default Hero;
-

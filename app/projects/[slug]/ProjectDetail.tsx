@@ -2,43 +2,20 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import type { Project } from "@/app/types";
 import { projectsData } from "@/app/types";
 import { 
-  QrCode, Globe, Facebook, Linkedin, Twitter, Github,
-  Calendar, MapPin, Users, Award, TrendingUp, Shield,
-  Download, Play, Star, MessageCircle, ExternalLink,
-  ChevronLeft, ChevronRight, Eye, Heart, Share2
+  Globe, Facebook, Linkedin, Twitter, Github,
+  Calendar, MapPin, Award, TrendingUp,
+  Download, Play, MessageCircle, ExternalLink,
+  ChevronLeft, ChevronRight, Heart, Share2
 } from "lucide-react";
+
 type Props = {
   showSeeAll?: boolean;
   project: Project;
-};
-
-const Projects: React.FC<Props> = ({ showSeeAll = true }) => {
-  return (
-    <section className="py-28 bg-slate-50" id="projects">
-      <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-bold mb-5 text-center">Dự án</h2>
-
-        {/* render grid project cards ở đây */}
-
-        {showSeeAll && (
-          <div className="mt-16 text-center">
-            <motion.a
-              href="/projects"
-              className="inline-block px-8 py-3 rounded-xl font-semibold text-white bg-blue-900 hover:bg-blue-800 shadow-lg transition"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Xem tất cả dự án →
-            </motion.a>
-          </div>
-        )}
-      </div>
-    </section>
-  );
 };
 
 const smallCard = {
@@ -436,9 +413,11 @@ export default function ProjectDetail({ project }: Props) {
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="flex-1">
               <div className="flex items-center gap-4 mb-6">
-                <img
+                <Image
                   src={project.logo}
                   alt={project.name}
+                  width={80}
+                  height={80}
                   className="w-20 h-20 bg-white/10 backdrop-blur-sm rounded-2xl p-3 shadow-2xl"
                 />
                 <div>
@@ -482,9 +461,11 @@ export default function ProjectDetail({ project }: Props) {
             
             <div className="flex-1">
               <div className="relative">
-                <img
+                <Image
                   src={detail.gallery[0].url}
                   alt="Product showcase"
+                  width={1200}
+                  height={700}
                   className="w-full rounded-2xl shadow-2xl"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
@@ -663,9 +644,11 @@ export default function ProjectDetail({ project }: Props) {
           
           <div className="relative mb-8">
             <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-              <img
+              <Image
                 src={detail.gallery[currentImageIndex].url}
                 alt={detail.gallery[currentImageIndex].title}
+                width={1200}
+                height={700}
                 className="w-full h-96 object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
@@ -702,9 +685,11 @@ export default function ProjectDetail({ project }: Props) {
                   index === currentImageIndex ? 'ring-4 ring-[#0a1a3f]' : 'hover:opacity-80'
                 } transition-all cursor-pointer`}
               >
-                <img
+                <Image
                   src={image.url}
                   alt={image.title}
+                  width={300}
+                  height={80}
                   className="w-full h-20 object-cover"
                 />
               </button>
@@ -798,9 +783,11 @@ export default function ProjectDetail({ project }: Props) {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {detail.team.map((member) => (
               <div key={member.name} className="bg-white p-6 rounded-2xl shadow-lg text-center group hover:shadow-xl transition-shadow">
-                <img
+                <Image
                   src={member.avatar}
                   alt={member.name}
+                  width={120}
+                  height={120}
                   className="w-24 h-24 mx-auto rounded-full mb-4 group-hover:scale-105 transition-transform"
                 />
                 <h3 className="font-bold text-lg mb-1">{member.name}</h3>
@@ -823,9 +810,11 @@ export default function ProjectDetail({ project }: Props) {
             <div className="grid sm:grid-cols-2 gap-6">
               {detail.advisors.map((advisor) => (
                 <div key={advisor.name} className="bg-gray-50 p-6 rounded-xl flex items-center gap-4">
-                  <img
+                  <Image
                     src={advisor.avatar}
                     alt={advisor.name}
+                    width={64}
+                    height={64}
                     className="w-16 h-16 rounded-full"
                   />
                   <div>
@@ -988,7 +977,13 @@ export default function ProjectDetail({ project }: Props) {
               <h3 className="text-2xl font-bold mb-6">Download Our App</h3>
               
               <div className="flex justify-center mb-6">
-                <img src={detail.qrCode} alt="QR Code" className="w-40 h-40 bg-white rounded-2xl p-4" />
+                <Image 
+                  src={detail.qrCode} 
+                  alt="QR Code" 
+                  width={160}
+                  height={160}
+                  className="w-40 h-40 bg-white rounded-2xl p-4" 
+                />
               </div>
               
               <p className="mb-6 opacity-90">Scan QR code or download directly:</p>
@@ -1036,9 +1031,11 @@ export default function ProjectDetail({ project }: Props) {
                 key={relatedProject.slug}
                 className="bg-white border border-gray-200 p-6 rounded-xl hover:shadow-xl hover:border-[#0a1a3f] transition-all group"
               >
-                <img 
+                <Image 
                   src={relatedProject.logo} 
                   alt={relatedProject.name} 
+                  width={64}
+                  height={64}
                   className="w-16 h-16 mb-4 group-hover:scale-110 transition-transform" 
                 />
                 <h3 className="font-bold text-lg mb-2 group-hover:text-[#0a1a3f]">

@@ -16,7 +16,6 @@ const MovingGrid = () => {
   });
   
   const gridSize = 100;
-  const gridDivisions = 100;
 
   const vertexShader = `
     varying vec2 vUv;

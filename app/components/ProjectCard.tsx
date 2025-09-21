@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import type { Project } from "../data/projectsData";
 
@@ -75,9 +76,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
     >
       {/* Logo + Name */}
       <div className="flex items-start mb-6">
-        <img
+        <Image
           src={project.logo}
           alt={`${project.name} logo`}
+          width={64}
+          height={64}
           className="w-16 h-16 mr-6 rounded-lg shadow-sm border border-gray-200 bg-gray-50 object-contain"
         />
         <div>

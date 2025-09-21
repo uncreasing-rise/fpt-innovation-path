@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 const partnersData = [
     { name: "Innovate Capital", logo: "https://placehold.co/200x100/f8fafc/94a3b8/png?text=Innovate+Capital" },
@@ -16,7 +17,13 @@ const Partners: React.FC = () => {
                 <div className="flex flex-wrap items-center justify-center gap-x-16 gap-y-10">
                     {partnersData.map((partner, index) => (
                         <div key={index} className="grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition duration-300 transform hover:scale-110">
-                            <img src={partner.logo} alt={partner.name} className="h-12" />
+                            <Image 
+                                src={partner.logo} 
+                                alt={partner.name} 
+                                width={200}
+                                height={100}
+                                className="h-12 w-auto" 
+                            />
                         </div>
                     ))}
                 </div>

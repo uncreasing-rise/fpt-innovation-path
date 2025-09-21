@@ -1,8 +1,9 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 import { motion, Variants } from 'framer-motion';
-import { Calendar, MapPin, ArrowRight, Users } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 // Define types for props for better maintainability
 type Event = {
@@ -51,7 +52,13 @@ const EventCard = ({ event, onSelect, index }: { event: Event, onSelect: () => v
             className="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col group border border-slate-200/80"
         >
             <div className="relative overflow-hidden">
-                <img src={event.img} alt={event.title} className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300" />
+                <Image 
+                    src={event.img} 
+                    alt={event.title} 
+                    width={400}
+                    height={208}
+                    className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300" 
+                />
                 <div className={`absolute top-4 left-4 text-xs font-bold px-3 py-1 rounded-full ${status.color} ${status.textColor}`}>
                     {status.text}
                 </div>

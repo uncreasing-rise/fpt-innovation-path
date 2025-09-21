@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { eventsData } from "../data/eventsData";
 
 const EventsPage: React.FC = () => {
@@ -13,6 +14,7 @@ const EventsPage: React.FC = () => {
         <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-5 text-center">
           Sự Kiện Nổi Bật
         </h2>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
           {eventsData.map((event) => (
             <motion.div
@@ -20,11 +22,18 @@ const EventsPage: React.FC = () => {
               className="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col border"
               whileHover={{ scale: 1.02 }}
             >
-              <img
-                src={event.img}
-                alt={event.title}
-                className="w-full h-52 object-cover"
-              />
+              {/* Sử dụng Next.js Image */}
+              <div className="relative w-full h-52">
+                <Image
+                  src={event.img}
+                  alt={event.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  priority={true}
+                />
+              </div>
+
               <div className="p-6 flex flex-col flex-grow">
                 <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
                   {event.eventType}
